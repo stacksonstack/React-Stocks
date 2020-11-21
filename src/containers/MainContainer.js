@@ -5,6 +5,38 @@ import SearchBar from '../components/SearchBar'
 
 class MainContainer extends Component {
 
+  async componentDidMount(){
+    let response = await fetch("http://localhost:3000/stocks")
+    let data = await response.json()
+    this.setState({
+      stocks: data
+    })
+  }
+
+  state = {
+    stocks: [],
+    portfolio: []
+  }
+
+  renderPortfolio = (stockObj) => {
+    let objIndex = this.state.portfolio.findIndex(({id}) => id === stockObj.id)
+    
+    if(objIndex === -1){
+      this.setState({portfolio: [...this.state.portfolio, stockObj]})
+    }
+
+  }
+
+  deleteStock = (stockObj) => {
+    let objIndex = this.state.portfolio.findIndex(({id}) => id === stockObj.id)
+    let newArray = [...this.state.portfolio]
+    newArray.splice(objIndex, 1)
+    console.log(objIndex)
+      this.setState({portfolio: newArray})
+  
+      
+  }
+
   render() {
     return (
       <div>
@@ -13,12 +45,12 @@ class MainContainer extends Component {
           <div className="row">
             <div className="col-8">
 
-              <StockContainer/>
+              <StockContainer stocks={this.state.stocks} portfolio={this.renderPortfolio}/>
 
             </div>
             <div className="col-4">
 
-              <PortfolioContainer/>
+              <PortfolioContainer myStocks={this.state.portfolio} deleteStock={this.deleteStock}/>
 
             </div>
           </div>
