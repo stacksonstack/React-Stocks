@@ -13,6 +13,10 @@ const Stock = ({stock, portfolio}) => (
             //ticker: stock price
             stock.ticker
           }</p>
+           <p className="card-text">{
+            //ticker: stock price
+            stock.price
+          }</p>
       </div>
     </div>
 
